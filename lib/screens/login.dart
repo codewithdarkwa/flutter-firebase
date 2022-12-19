@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_firebase_app/screens/register.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../auth/fire_auth.dart';
 import '../auth/validator.dart';
 import 'profile.dart';
 import 'reset_password.dart';
@@ -164,7 +166,23 @@ class _LoginPageState extends State<LoginPage> {
                   // backgroundColor: Colors.transparent,
                   shape: const StadiumBorder(),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    User? user =
+                        await Authentication.signInWithGoogle(context: context);
+
+                    if (user != null) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfilePage(),
+                        ),
+                      );
+                    }
+                  } on PlatformException catch (e) {
+                    debugPrint(e.toString());
+                  }
+                },
                 icon: const Icon(
                   Ionicons.logo_google,
                 ),
