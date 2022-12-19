@@ -172,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                         await Authentication.signInWithGoogle(context: context);
 
                     if (user != null) {
+                      // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

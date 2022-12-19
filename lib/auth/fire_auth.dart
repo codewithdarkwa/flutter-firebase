@@ -39,4 +39,9 @@ class Authentication {
 
     return user;
   }
+
+  static Future<void> signOutWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
+  }
 }
