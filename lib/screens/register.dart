@@ -100,6 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     } catch (e) {
                       print(e);
                     }
+                    // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

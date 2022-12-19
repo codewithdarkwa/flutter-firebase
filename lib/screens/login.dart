@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/screens/register.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../auth/validator.dart';
 import 'profile.dart';
@@ -86,7 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     } on FirebaseAuthException catch (e) {
-                      print(e);
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(e.message!)));
                     }
@@ -135,6 +135,40 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   )
                 ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: const [
+                  Expanded(
+                    child: Divider(
+                      thickness: 2,
+                    ),
+                  ),
+                  Text(
+                    'Continue with Google',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Color.fromARGB(255, 57, 54, 54),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(
+                      thickness: 2,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  // backgroundColor: Colors.transparent,
+                  shape: const StadiumBorder(),
+                ),
+                onPressed: () {},
+                icon: const Icon(
+                  Ionicons.logo_google,
+                ),
+                label: const Text('Continue with google'),
               ),
             ],
           ),
