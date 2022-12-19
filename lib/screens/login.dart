@@ -163,7 +163,6 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  // backgroundColor: Colors.transparent,
                   shape: const StadiumBorder(),
                 ),
                 onPressed: () async {
