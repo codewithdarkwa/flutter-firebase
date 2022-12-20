@@ -30,6 +30,7 @@ class Authentication {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           //handle the error here
+
         } else if (e.code == 'invalid-credential') {
           // handle the error here
         }

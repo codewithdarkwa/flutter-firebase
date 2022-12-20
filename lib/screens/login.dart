@@ -89,8 +89,15 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     } on FirebaseAuthException catch (e) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(e.message!)));
+                      // customSnackBar(content: '${e.message}');
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.black,
+                        content: Text(
+                          '${e.message}',
+                          style: const TextStyle(
+                              color: Colors.redAccent, letterSpacing: 0.5),
+                        ),
+                      ));
                     }
                   }
                 },
@@ -138,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 8),
               Row(
                 children: const [
                   Expanded(
@@ -160,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 7),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
