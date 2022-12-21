@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../auth/fire_auth.dart';
 import 'login.dart';
-import 'register.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -25,22 +24,17 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const RegisterPage()));
-              },
-              child: const Text('SignOut'),
-            ),
-            ElevatedButton(
               onPressed: () async {
                 await Authentication.signOutWithGoogle();
+                _auth.signOut();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                  MaterialPageRoute(
+                    builder: (_) => const LoginPage(),
+                  ),
                 );
               },
-              child: const Text('Logout from google'),
+              child: const Text('SignOut'),
             ),
           ],
         ),
