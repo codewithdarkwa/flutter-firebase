@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () async {
                 await Authentication.signOutWithGoogle();
                 _auth.signOut();
+                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
