@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,13 @@ class _RegisterPageState extends State<RegisterPage> {
     _passwordTextController.dispose();
     _nameTextController.dispose();
     super.dispose();
+  }
+
+  Future addUser(String name, String email) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': name,
+      'email': email,
+    });
   }
 
   @override
@@ -90,6 +98,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           .createUserWithEmailAndPassword(
                         email: _emailTextController.text,
                         password: _passwordTextController.text,
+                      );
+                      addUser(
+                        _emailTextController.text.trim(),
+                        _nameTextController.text.trim(),
                       );
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
