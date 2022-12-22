@@ -38,161 +38,163 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextFormField(
-                  controller: _emailTextController,
-                  validator: (value) => Validator.validateEmail(email: value!),
-                  decoration: const InputDecoration(
-                    filled: true,
-                    contentPadding: EdgeInsets.all(8),
-                    hintText: 'Email',
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 22,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextFormField(
-                  controller: _passwordTextController,
-                  validator: (value) =>
-                      Validator.validatePassword(password: value!),
-                  decoration: const InputDecoration(
-                    filled: true,
-                    contentPadding: EdgeInsets.all(8),
-                    hintText: 'Password',
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextFormField(
+                    controller: _emailTextController,
+                    validator: (value) =>
+                        Validator.validateEmail(email: value!),
+                    decoration: const InputDecoration(
+                      filled: true,
+                      contentPadding: EdgeInsets.all(8),
+                      hintText: 'Email',
+                    ),
                   ),
-                  obscureText: true,
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextFormField(
+                    controller: _passwordTextController,
+                    validator: (value) =>
+                        Validator.validatePassword(password: value!),
+                    decoration: const InputDecoration(
+                      filled: true,
+                      contentPadding: EdgeInsets.all(8),
+                      hintText: 'Password',
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text,
+                        );
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfilePage(),
+                          ),
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.black,
+                          content: Text(
+                            '${e.message}',
+                            style: const TextStyle(
+                                color: Colors.redAccent, letterSpacing: 0.5),
+                          ),
+                        ));
+                      }
+                    }
+                  },
+                  child: const Text('Login'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const ResetPassword(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Reset Password',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Don\'t have an account yet ? ',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RegisterPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: const [
+                    Expanded(
+                      child: Divider(
+                        thickness: 2,
+                      ),
+                    ),
+                    Text(
+                      'Continue with Google',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Color.fromARGB(255, 57, 54, 54),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 2,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 7),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                  ),
+                  onPressed: () async {
                     try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: _emailTextController.text,
-                        password: _passwordTextController.text,
-                      );
-                      // ignore: use_build_context_synchronously
+                      User? user = await Authentication.signInWithGoogle(
+                          context: context);
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (_) => const ProfilePage(),
                         ),
                       );
-                    } on FirebaseAuthException catch (e) {
-                      // customSnackBar(content: '${e.message}');
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Colors.black,
-                        content: Text(
-                          '${e.message}',
-                          style: const TextStyle(
-                              color: Colors.redAccent, letterSpacing: 0.5),
-                        ),
-                      ));
+                    } on PlatformException catch (e) {
+                      debugPrint(e.toString());
                     }
-                  }
-                },
-                child: const Text('Login'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const ResetPassword(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Reset Password',
-                  style: TextStyle(
-                    fontSize: 18,
+                  },
+                  icon: const Icon(
+                    Ionicons.logo_google,
                   ),
+                  label: const Text('Continue with google'),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Don\'t have an account yet ? ',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterPage(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: const [
-                  Expanded(
-                    child: Divider(
-                      thickness: 2,
-                    ),
-                  ),
-                  Text(
-                    'Continue with Google',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Color.fromARGB(255, 57, 54, 54),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      thickness: 2,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 7),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                ),
-                onPressed: () async {
-                  try {
-                    User? user =
-                        await Authentication.signInWithGoogle(context: context);
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ProfilePage(),
-                      ),
-                    );
-                  } on PlatformException catch (e) {
-                    debugPrint(e.toString());
-                  }
-                },
-                icon: const Icon(
-                  Ionicons.logo_google,
-                ),
-                label: const Text('Continue with google'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
