@@ -177,15 +177,12 @@ class _LoginPageState extends State<LoginPage> {
                     User? user =
                         await Authentication.signInWithGoogle(context: context);
 
-                    if (user != null) {
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ProfilePage(),
-                        ),
-                      );
-                    }
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ProfilePage(),
+                      ),
+                    );
                   } on PlatformException catch (e) {
                     debugPrint(e.toString());
                   }
