@@ -24,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Sign in as ${_auth.currentUser!.email}'),
+            Image.network('${_auth.currentUser!.photoURL}'),
             ElevatedButton(
               onPressed: () async {
                 await Authentication.signOutWithGoogle();
