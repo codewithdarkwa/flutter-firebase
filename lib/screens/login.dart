@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 25),
                 Row(
                   children: const [
                     Expanded(
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 7),
+                const SizedBox(height: 15),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     shape: const StadiumBorder(),
