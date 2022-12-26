@@ -3,25 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signInWithEmailAndPassword(
+      {required email, required password}) async {
+    try {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> createUserWithEmailAndPassword(
+      {required name, required email, required password}) async {
+    try {
+      await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
-    //Creating an instance of firebase auth and googleSignIn
     FirebaseAuth auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     User? user;
-
-    //trigger the authentication flow
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     if (googleUser != null) {
-      //obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      //Create a new credential
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      //SignIn the user with the credential
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
@@ -29,13 +48,7 @@ class Authentication {
         user = userCredential.user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
-          //handle the error here
-
-        } else if (e.code == 'invalid-credential') {
-          // handle the error here
-        }
-      } catch (e) {
-        // handle the error here
+        } else if (e.code == 'invalid-credential') {}
       }
     }
 
