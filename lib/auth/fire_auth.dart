@@ -3,29 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<void> signInWithEmailAndPassword(
-      {required email, required password}) async {
+  static Future<void> signInWithEmailAndPassword(
+      {required email, required password, required context}) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black,
+        content: Text(
+          '${e.message}',
+          style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+        ),
+      ));
     }
   }
 
-  Future<void> createUserWithEmailAndPassword(
-      {required name, required email, required password}) async {
+  static Future<void> createUserWithEmailAndPassword(
+      {required name,
+      required email,
+      required password,
+      required context}) async {
     try {
-      await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.black,
+        content: Text(
+          '${e.message}',
+          style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+        ),
+      ));
     }
   }
 
   Future<void> signOut() async {
-    await auth.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
@@ -47,8 +61,13 @@ class Authentication {
 
         user = userCredential.user;
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-        } else if (e.code == 'invalid-credential') {}
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.black,
+          content: Text(
+            '${e.message}',
+            style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+          ),
+        ));
       }
     }
 

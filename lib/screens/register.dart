@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/fire_auth.dart';
 import '../auth/validator.dart';
 import 'login.dart';
 
@@ -95,25 +95,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      try {
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text,
-                        );
-                        addUser(
-                          _emailTextController.text.trim(),
-                          _nameTextController.text.trim(),
-                        );
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print('The password provided is too weak.');
-                        } else if (e.code == 'email-already-in-use') {
-                          print('The account already exists for that email.');
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
+                      Authentication.createUserWithEmailAndPassword(
+                        name: _nameTextController.text,
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text,
+                        context: context,
+                      );
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(
                         context,

@@ -78,28 +78,11 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text,
-                        );
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ProfilePage(),
-                          ),
-                        );
-                      } on FirebaseAuthException catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Colors.black,
-                          content: Text(
-                            '${e.message}',
-                            style: const TextStyle(
-                                color: Colors.redAccent, letterSpacing: 0.5),
-                          ),
-                        ));
-                      }
+                      Authentication.signInWithEmailAndPassword(
+                        context: context,
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text,
+                      );
                     }
                   },
                   child: const Text('Login'),
