@@ -38,7 +38,16 @@ class Authentication {
     }
   }
 
-  Future<void> signOut() async {
+  static Future<void> resetPassword({required email, required context}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message!)));
+    }
+  }
+
+  static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 
