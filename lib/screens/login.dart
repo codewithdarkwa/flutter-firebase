@@ -84,6 +84,10 @@ class _LoginPageState extends State<LoginPage> {
                         password: _passwordTextController.text,
                       );
                     }
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((_) => const ProfilePage())));
                   },
                   child: const Text('Login'),
                 ),
