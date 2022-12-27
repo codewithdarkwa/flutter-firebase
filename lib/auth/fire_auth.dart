@@ -9,13 +9,15 @@ class Authentication {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.black,
-        content: Text(
-          '${e.message}',
-          style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.black,
+          content: Text(
+            '${e.message}',
+            style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+          ),
         ),
-      ));
+      );
     }
   }
 
@@ -28,13 +30,15 @@ class Authentication {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.black,
-        content: Text(
-          '${e.message}',
-          style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.black,
+          content: Text(
+            '${e.message}',
+            style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+          ),
         ),
-      ));
+      );
     }
   }
 

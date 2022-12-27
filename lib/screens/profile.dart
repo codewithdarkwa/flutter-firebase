@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               onPressed: () async {
                 await Authentication.signOutWithGoogle();
-                _auth.signOut();
+                Authentication.signOut();
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
                   context,
