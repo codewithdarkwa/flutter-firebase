@@ -18,27 +18,30 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile Page'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Authentication.signOutWithGoogle();
+              Authentication.signOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.logout_outlined),
+          ),
+        ],
+        elevation: 0,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Sign in as ${_auth.currentUser!.email}'),
-            ElevatedButton(
-              onPressed: () async {
-                await Authentication.signOutWithGoogle();
-                Authentication.signOut();
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
-                );
-              },
-              child: const Text('SignOut'),
-            ),
-          ],
+        child: Text(
+          'Sign in as ${_auth.currentUser!.displayName}',
+          style: const TextStyle(
+            fontSize: 17,
+          ),
         ),
       ),
     );
