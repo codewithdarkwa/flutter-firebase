@@ -23,13 +23,14 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () async {
               await Authentication.signOutWithGoogle();
               Authentication.signOut();
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-              );
+              if (mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
+              }
             },
             icon: const Icon(Icons.logout_outlined),
           ),
@@ -38,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Center(
         child: Text(
-          'Sign in as ${_auth.currentUser!.displayName}',
+          'Sign in as ${_auth.currentUser!.email}',
           style: const TextStyle(
             fontSize: 17,
           ),
