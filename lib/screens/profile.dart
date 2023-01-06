@@ -14,6 +14,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final userCollections =
       FirebaseFirestore.instance.collection('users').snapshots();
+
+  void deleteUser(String id) async {
+    await FirebaseFirestore.instance.collection('users').doc(id).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          deleteUser(userId);
+                        },
                         icon: const Icon(Icons.delete),
                       ),
                       IconButton(

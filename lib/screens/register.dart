@@ -26,7 +26,10 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future addUser(String name, String email) async {
+  Future addUser({
+    required name,
+    required email,
+  }) async {
     await FirebaseFirestore.instance.collection('users').add({
       'name': name,
       'email': email,
@@ -96,18 +99,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       Authentication.createUserWithEmailAndPassword(
-                        name: _nameTextController.text,
-                        email: _emailTextController.text,
-                        password: _passwordTextController.text,
+                        name: _nameTextController.text.trim(),
+                        email: _emailTextController.text.trim(),
+                        password: _passwordTextController.text.trim(),
                         context: context,
                       );
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const LoginPage(),
-                        ),
+                      await addUser(
+                        name: _nameTextController.text.trim(),
+                        email: _emailTextController.text.trim(),
                       );
+                      if (mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginPage(),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: const Text('Register'),
