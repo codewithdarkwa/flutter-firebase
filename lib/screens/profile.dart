@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/fire_auth.dart';
@@ -12,7 +12,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final userCollections =
+      FirebaseFirestore.instance.collection('users').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +38,11 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
         elevation: 0,
       ),
-      body: Center(
-        child: Text(
-          'Sign in as ${_auth.currentUser!.email}',
-          style: const TextStyle(
-            fontSize: 17,
-          ),
-        ),
+      body: StreamBuilder(
+        stream: userCollections,
+        builder: (context, snapshots) {
+          return const Text('Data');
+        },
       ),
     );
   }
