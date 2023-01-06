@@ -40,8 +40,48 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: StreamBuilder(
         stream: userCollections,
-        builder: (context, snapshots) {
-          return const Text('Data');
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+            if (documents.isEmpty) {
+              return const Center(
+                child: Text('There is no available data'),
+              );
+            }
+            return ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final user = documents[index].data() as Map<String, dynamic>;
+                final userId = documents[index].id;
+                final String name = user['name'];
+                final String email = user['email'];
+                return ListTile(
+                  title: Text(name),
+                  subtitle: Text(email),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.delete),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.edit),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error occured'),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

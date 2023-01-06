@@ -164,13 +164,14 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       User? user = await Authentication.signInWithGoogle(
                           context: context);
-
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ProfilePage(),
-                        ),
-                      );
+                      if (mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfilePage(),
+                          ),
+                        );
+                      }
                     } on PlatformException catch (e) {
                       debugPrint(e.toString());
                     }
