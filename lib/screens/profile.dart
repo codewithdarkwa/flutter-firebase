@@ -12,8 +12,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final userCollections =
-      FirebaseFirestore.instance.collection('users').snapshots();
+  // final userCollections =
+  //     FirebaseFirestore.instance.collection('users').snapshots();
 
   void deleteUser(String id) async {
     await FirebaseFirestore.instance.collection('users').doc(id).delete();
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
         elevation: 0,
       ),
       body: StreamBuilder(
-        stream: userCollections,
+        stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
