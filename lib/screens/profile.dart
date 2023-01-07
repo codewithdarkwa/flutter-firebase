@@ -12,9 +12,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // final userCollections =
-  //     FirebaseFirestore.instance.collection('users').snapshots();
-
   void deleteUser(String id) async {
     await FirebaseFirestore.instance.collection('users').doc(id).delete();
   }

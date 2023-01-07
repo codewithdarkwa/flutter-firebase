@@ -45,9 +45,16 @@ class Authentication {
   static Future<void> resetPassword({required email, required context}) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Check your email list to reset your password'),
+        ),
+      );
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message!)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message!)),
+      );
     }
   }
 
