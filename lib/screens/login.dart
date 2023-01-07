@@ -163,7 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     try {
                       User? user = await Authentication.signInWithGoogle(
-                          context: context);
+                        context: context,
+                      );
+                      print(user!.displayName);
                       if (mounted) {
                         Navigator.pushReplacement(
                           context,
