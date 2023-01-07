@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,18 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+
+  Future addUser({
+    required name,
+    required email,
+  }) async {
+    await FirebaseFirestore.instance.collection('users').add(
+      {
+        'name': name,
+        'email': email,
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -84,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         password: _passwordTextController.text,
                       );
                     }
+
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -165,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                       User? user = await Authentication.signInWithGoogle(
                         context: context,
                       );
-                      print(user!.displayName);
+                      await addUser(name: user!.displayName, email: user.email);
                       if (mounted) {
                         Navigator.pushReplacement(
                           context,

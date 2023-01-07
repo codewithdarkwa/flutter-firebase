@@ -30,10 +30,12 @@ class _RegisterPageState extends State<RegisterPage> {
     required name,
     required email,
   }) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'name': name,
-      'email': email,
-    });
+    await FirebaseFirestore.instance.collection('users').add(
+      {
+        'name': name,
+        'email': email,
+      },
+    );
   }
 
   @override
